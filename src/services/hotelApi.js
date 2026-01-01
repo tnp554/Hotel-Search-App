@@ -4,20 +4,17 @@ const CLIENT_ID = import.meta.env.VITE_AMADEUS_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_AMADEUS_CLIENT_SECRET;
 const BASE_URL = 'https://test.api.amadeus.com';
 
-// Token cache
 let accessToken = null;
 let tokenExpiry = null;
 
-// Get OAuth access token
 const getAccessToken = async () => {
-  // Return cached token if still valid
   if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
-    console.log('✅ Using cached access token');
+    console.log('Using cached access token');
     return accessToken;
   }
 
   try {
-    console.log('🔐 Requesting new access token...');
+    console.log('Requesting new access token...');
     
     const response = await axios.post(
       `${BASE_URL}/v1/security/oauth2/token`,
@@ -34,18 +31,16 @@ const getAccessToken = async () => {
     );
 
     accessToken = response.data.access_token;
-    // Set expiry to 5 minutes before actual expiry for safety
     tokenExpiry = Date.now() + (response.data.expires_in - 300) * 1000;
     
-    console.log('✅ Access token obtained');
+    console.log('Access token obtained');
     return accessToken;
   } catch (error) {
-    console.error('❌ Failed to get access token:', error.response?.data || error.message);
+    console.error('Failed to get access token:', error.response?.data || error.message);
     throw new Error('Failed to authenticate with Amadeus API');
   }
 };
 
-// Create axios instance
 const amadeusApi = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -54,7 +49,6 @@ const amadeusApi = axios.create({
   timeout: 30000,
 });
 
-// Add request interceptor to add access token
 amadeusApi.interceptors.request.use(
   async (config) => {
     const token = await getAccessToken();
@@ -66,7 +60,6 @@ amadeusApi.interceptors.request.use(
   }
 );
 
-// City/Airport IATA code mapping
 const CITY_CODES = {
   'new york': 'NYC',
   'nyc': 'NYC',
@@ -114,14 +107,12 @@ const CITY_CODES = {
   'montreal': 'YMQ',
 };
 
-// Get city code
 const getCityCode = (destination) => {
   if (!destination) return 'NYC';
   const normalized = destination.toLowerCase().trim();
   return CITY_CODES[normalized] || 'NYC';
 };
 
-// Format date for API (YYYY-MM-DD)
 const formatDate = (date) => {
   if (!date) return null;
   const d = new Date(date);
@@ -131,7 +122,6 @@ const formatDate = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-// Get default dates
 const getDefaultDates = () => {
   const today = new Date();
   const checkIn = new Date(today);
@@ -146,7 +136,6 @@ const getDefaultDates = () => {
   };
 };
 
-// Search hotels by city
 export const searchHotels = async (filters) => {
   try {
     const defaultDates = getDefaultDates();
@@ -156,14 +145,13 @@ export const searchHotels = async (filters) => {
     const adults = parseInt(filters.adults) || 2;
     const cityCode = getCityCode(filters.destination);
 
-    console.log('🔍 Searching hotels with parameters:', {
+    console.log('Searching hotels with parameters:', {
       cityCode,
       checkInDate,
       checkOutDate,
       adults
     });
 
-    // Step 1: Get hotel list by city
     const hotelListResponse = await amadeusApi.get('/v1/reference-data/locations/hotels/by-city', {
       params: {
         cityCode: cityCode,
@@ -174,17 +162,16 @@ export const searchHotels = async (filters) => {
     });
 
     const hotelIds = hotelListResponse.data.data
-      .slice(0, 50) // Limit to first 50 hotels
+      .slice(0, 50)
       .map(hotel => hotel.hotelId);
 
     if (hotelIds.length === 0) {
-      console.warn('⚠️ No hotels found for city:', cityCode);
+      console.warn('No hotels found for city:', cityCode);
       return { hotels: { hotels: [] } };
     }
 
-    console.log(`✅ Found ${hotelIds.length} hotels in ${cityCode}`);
+    console.log(`Found ${hotelIds.length} hotels in ${cityCode}`);
 
-    // Step 2: Get hotel offers for these hotels
     const offersResponse = await amadeusApi.get('/v3/shopping/hotel-offers', {
       params: {
         hotelIds: hotelIds.join(','),
@@ -199,9 +186,8 @@ export const searchHotels = async (filters) => {
 
     let hotels = offersResponse.data.data || [];
 
-    console.log(`✅ Received ${hotels.length} hotel offers`);
+    console.log(`Received ${hotels.length} hotel offers`);
 
-    // Transform Amadeus response to our format
     hotels = hotels.map(hotelData => {
       const hotel = hotelData.hotel;
       const offer = hotelData.offers?.[0];
@@ -213,19 +199,15 @@ export const searchHotels = async (filters) => {
         latitude: hotel.latitude,
         longitude: hotel.longitude,
         
-        // Rating
         categoryName: hotel.rating ? `${hotel.rating} Stars` : '3 Stars',
         rating: hotel.rating || 3,
         
-        // Location
         address: hotel.address?.lines?.[0] || '',
         city: hotel.address?.cityName || cityCode,
         
-        // Price
         minRate: offer?.price?.total || '0',
         currency: offer?.price?.currency || 'USD',
         
-        // Room details
         rooms: offer ? [{
           code: offer.room?.type || 'STANDARD',
           name: offer.room?.typeEstimated?.category || 'Standard Room',
@@ -236,25 +218,21 @@ export const searchHotels = async (filters) => {
           }]
         }] : [],
         
-        // Amenities
         amenities: hotel.amenities || [],
         
-        // Description
         description: offer?.room?.description?.text || hotel.description || ''
       };
     });
 
-    // Apply rating filter
     if (filters.rating) {
       const minRating = parseInt(filters.rating);
       hotels = hotels.filter(hotel => {
         const stars = hotel.rating || 0;
         return stars >= minRating;
       });
-      console.log(`🔍 Rating filter (${minRating}+): ${hotels.length} hotels`);
+      console.log(`Rating filter (${minRating}+): ${hotels.length} hotels`);
     }
 
-    // Apply price filter
     if (filters.minPrice || filters.maxPrice) {
       const minPrice = parseFloat(filters.minPrice) || 0;
       const maxPrice = parseFloat(filters.maxPrice) || 999999;
@@ -263,7 +241,7 @@ export const searchHotels = async (filters) => {
         const price = parseFloat(hotel.minRate);
         return price >= minPrice && price <= maxPrice;
       });
-      console.log(`💰 Price filter ($${minPrice}-$${maxPrice}): ${hotels.length} hotels`);
+      console.log(`Price filter ($${minPrice}-$${maxPrice}): ${hotels.length} hotels`);
     }
 
     return {
@@ -276,7 +254,7 @@ export const searchHotels = async (filters) => {
     };
 
   } catch (error) {
-    console.error('❌ Amadeus API Error:', {
+    console.error('Amadeus API Error:', {
       message: error.message,
       status: error.response?.status,
       statusText: error.response?.statusText,
@@ -297,7 +275,6 @@ export const searchHotels = async (filters) => {
   }
 };
 
-// Get hotel details
 export const getHotelDetails = async (hotelId, checkIn, checkOut) => {
   try {
     const defaultDates = getDefaultDates();
@@ -321,7 +298,6 @@ export const getHotelDetails = async (hotelId, checkIn, checkOut) => {
   }
 };
 
-// Helper function to get board name
 const getBoardName = (boardType) => {
   const boardNames = {
     'ROOM_ONLY': 'Room Only',
@@ -333,7 +309,6 @@ const getBoardName = (boardType) => {
   return boardNames[boardType] || 'Room Only';
 };
 
-// Export available destinations
 export const AVAILABLE_DESTINATIONS = Object.entries(CITY_CODES).map(([name, code]) => ({
   name: name,
   code: code
