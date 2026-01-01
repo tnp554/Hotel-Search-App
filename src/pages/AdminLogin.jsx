@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 
-const Login = () => {
+const AdminLogin = () => {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -26,25 +24,26 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    if (!formData.email || !formData.password) {
-      setError('Please fill in all fields');
-      setLoading(false);
-      return;
-    }
-
-    const { data, error } = await signIn(formData.email, formData.password);
-
-    if (error) {
-      setError(error.message || 'Failed to sign in');
-      setLoading(false);
+    if (formData.email === 'admin@support.com' && formData.password === 'Hello@123') {
+      localStorage.setItem('adminSession', JSON.stringify({
+        email: formData.email,
+        role: 'admin',
+        loginTime: new Date().toISOString()
+      }));
+      
+      navigate('/admin/dashboard');
     } else {
-      navigate('/hotels');
+      setError('Invalid admin credentials');
+      setLoading(false);
     }
   };
 
   return (
     <div className="form-container">
-      <h2>Sign In</h2>
+      <h2>Admin Login</h2>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '20px' }}>
+        Administrative Access Only
+      </p>
       
       {error && (
         <div className="alert alert-error">
@@ -54,27 +53,27 @@ const Login = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Admin Email</label>
           <input
             type="email"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder="Enter admin mail"
             required
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Admin Password</label>
           <input
             type="password"
             id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Enter your password"
+            placeholder="Enter admin password"
             required
           />
         </div>
@@ -85,21 +84,15 @@ const Login = () => {
           style={{ width: '100%' }}
           disabled={loading}
         >
-          {loading ? 'Signing in...' : 'Sign In'}
+          {loading ? 'Signing in...' : 'Admin Sign In'}
         </button>
       </form>
 
-      <div className="form-link" style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #e0e0e0' }}>
-        <Link to="/admin/login" style={{ fontSize: '13px', color: '#999' }}>
-          Admin Access
-        </Link>
-      </div>
-
       <div className="form-link">
-        Don't have an account? <Link to="/signup">Sign Up</Link>
+        <Link to="/login">← Back to User Login</Link>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AdminLogin;

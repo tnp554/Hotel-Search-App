@@ -565,3 +565,298 @@ body {
     width: 100%;
   }
 }
+
+/* =========================================
+   10. ADMIN PANEL
+   ========================================= */
+
+/* Admin Header */
+.admin-header {
+  background-color: var(--primary);
+  color: white;
+  padding: 20px 0;
+  box-shadow: 0 4px 20px rgba(46, 46, 48, 0.2);
+}
+
+.admin-header-content {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Admin Panel Container */
+.admin-panel {
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border: 1px solid #eee;
+}
+
+.admin-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.admin-panel-header h2 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Search Box */
+.search-box {
+  margin-bottom: 25px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Users Table */
+.users-table-container {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid #e0e0e0;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-white);
+}
+
+.users-table thead {
+  background: #f9fafb;
+}
+
+.users-table th {
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 14px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.users-table td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: var(--text-dark);
+}
+
+.users-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.users-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.users-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.confirmed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Button Sizes */
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Delete Confirmation Animation */
+.btn-danger.confirm {
+  background: var(--danger-hover);
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Admin Statistics */
+.admin-stats {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.admin-stat-card {
+  text-align: center;
+}
+
+.admin-stat-label {
+  color: var(--text-gray);
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.admin-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.admin-stat-value.primary {
+  color: var(--primary);
+}
+
+.admin-stat-value.success {
+  color: var(--success);
+}
+
+.admin-stat-value.warning {
+  color: #f59e0b;
+}
+
+/* Code Display */
+.users-table code {
+  font-size: 12px;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  color: var(--text-dark);
+}
+
+/* Alert Details (Expandable) */
+.alert details {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.alert summary {
+  cursor: pointer;
+  color: var(--text-gray);
+  padding: 5px 0;
+  user-select: none;
+}
+
+.alert summary:hover {
+  color: var(--text-dark);
+}
+
+.alert details > div {
+  margin-top: 10px;
+  padding: 10px;
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  border: 1px solid #e0e0e0;
+}
+
+.alert details ol {
+  padding-left: 20px;
+  margin-top: 5px;
+  line-height: 1.6;
+}
+
+.alert details code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--primary);
+}
+
+/* =========================================
+   11. ADMIN RESPONSIVE DESIGN
+   ========================================= */
+@media (max-width: 768px) {
+  .admin-header-content {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .admin-panel {
+    padding: 20px;
+  }
+
+  .admin-panel-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .admin-panel-header .btn {
+    width: 100%;
+  }
+
+  .users-table {
+    font-size: 12px;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 10px 8px;
+  }
+
+  /* Hide User ID column on mobile */
+  .users-table th:nth-child(2),
+  .users-table td:nth-child(2) {
+    display: none;
+  }
+
+  /* Stack statistics vertically on mobile */
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hide Created At on very small screens */
+  .users-table th:nth-child(3),
+  .users-table td:nth-child(3) {
+    display: none;
+  }
+}
