@@ -17,7 +17,7 @@ const Hotels = () => {
   const { selectedHotels } = useHotel();
 
   useEffect(() => {
-    handleSearch({});
+    setHasSearched(false);
   }, []);
 
   const handleSearch = async (filters) => {
@@ -27,13 +27,19 @@ const Hotels = () => {
     setCurrentPage(1);
 
     try {
+      console.log('Starting search with filters:', filters);
       const response = await searchHotels(filters);
       const hotelsList = response?.hotels?.hotels || [];
+      
+      console.log(`Search successful: ${hotelsList.length} hotels found`);
+      
       setHotels(hotelsList);
       setDisplayedHotels(hotelsList.slice(0, hotelsPerPage));
     } catch (err) {
-      setError('Failed to fetch hotels. Please try again.');
-      console.error('Search error:', err);
+      console.error('Search failed:', err);
+      setError(err.message || 'Failed to fetch hotels. Please try again.');
+      setHotels([]);
+      setDisplayedHotels([]);
     } finally {
       setLoading(false);
     }
@@ -58,7 +64,7 @@ const Hotels = () => {
 
         {error && (
           <div className="alert alert-error">
-            {error}
+            <strong>Error:</strong> {error}
           </div>
         )}
 
@@ -67,17 +73,32 @@ const Hotels = () => {
             <div className="loading-spinner"></div>
             <p>Searching for hotels...</p>
           </div>
-        ) : hasSearched && displayedHotels.length === 0 ? (
+        ) : !hasSearched ? (
+          <div className="empty-state">
+            <div className="empty-state-icon"></div>
+            <h3>Start Your Search</h3>
+            <p>Enter a destination above to find hotels</p>
+            <div style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
+              <strong>Popular destinations:</strong> Mumbai, Delhi, Bangalore, Goa, Jaipur, Dubai, Paris, New York
+            </div>
+          </div>
+        ) : displayedHotels.length === 0 ? (
           <div className="empty-state">
             <div className="empty-state-icon"></div>
             <h3>No hotels found</h3>
-            <p>Try adjusting your search filters</p>
+            <p>Try adjusting your search filters or try a different destination</p>
           </div>
         ) : (
           <>
             {displayedHotels.length > 0 && (
-              <div style={{ marginBottom: '20px', color: '#666' }}>
-                Showing {displayedHotels.length} of {hotels.length} hotels
+              <div style={{ 
+                marginBottom: '20px', 
+                padding: '10px 15px',
+                background: '#e6f7ff',
+                borderRadius: '8px',
+                border: '1px solid #91d5ff'
+              }}>
+                <strong>Live API Data:</strong> Showing {displayedHotels.length} of {hotels.length} hotels
               </div>
             )}
             
@@ -93,7 +114,7 @@ const Hotels = () => {
                   className="btn btn-primary" 
                   onClick={handleLoadMore}
                 >
-                  Load More Hotels
+                  Load More Hotels ({hotels.length - displayedHotels.length} remaining)
                 </button>
               </div>
             )}

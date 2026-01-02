@@ -61,6 +61,7 @@ amadeusApi.interceptors.request.use(
 );
 
 const CITY_CODES = {
+  // US Cities
   'new york': 'NYC',
   'nyc': 'NYC',
   'miami': 'MIA',
@@ -78,15 +79,26 @@ const CITY_CODES = {
   'washington': 'WAS',
   'dc': 'WAS',
   'atlanta': 'ATL',
+  'philadelphia': 'PHL',
+  'phoenix': 'PHX',
+  'san diego': 'SAN',
+  'dallas': 'DFW',
+  'houston': 'HOU',
+  'detroit': 'DTT',
+  'minneapolis': 'MSP',
+  'tampa': 'TPA',
+  'portland': 'PDX',
+  'austin': 'AUS',
+  'nashville': 'BNA',
+  'new orleans': 'MSY',
+  'salt lake city': 'SLC',
+  
+  // European Cities
   'paris': 'PAR',
   'london': 'LON',
   'barcelona': 'BCN',
   'madrid': 'MAD',
   'rome': 'ROM',
-  'dubai': 'DXB',
-  'tokyo': 'TYO',
-  'singapore': 'SIN',
-  'bangkok': 'BKK',
   'amsterdam': 'AMS',
   'berlin': 'BER',
   'prague': 'PRG',
@@ -97,20 +109,234 @@ const CITY_CODES = {
   'florence': 'FLR',
   'istanbul': 'IST',
   'athens': 'ATH',
+  'dublin': 'DUB',
+  'edinburgh': 'EDI',
+  'brussels': 'BRU',
+  'copenhagen': 'CPH',
+  'stockholm': 'STO',
+  'oslo': 'OSL',
+  'helsinki': 'HEL',
+  'zurich': 'ZRH',
+  'geneva': 'GVA',
+  'munich': 'MUC',
+  'frankfurt': 'FRA',
+  'hamburg': 'HAM',
+  'warsaw': 'WAW',
+  'budapest': 'BUD',
+  'krakow': 'KRK',
+  
+  // Middle East & Africa
+  'dubai': 'DXB',
+  'abu dhabi': 'AUH',
+  'doha': 'DOH',
+  'riyadh': 'RUH',
+  'jeddah': 'JED',
+  'tel aviv': 'TLV',
+  'cairo': 'CAI',
+  'casablanca': 'CAS',
+  'marrakech': 'RAK',
+  'cape town': 'CPT',
+  'johannesburg': 'JNB',
+  
+  // Asia Pacific
+  'tokyo': 'TYO',
+  'singapore': 'SIN',
+  'bangkok': 'BKK',
+  'hong kong': 'HKG',
   'sydney': 'SYD',
   'melbourne': 'MEL',
-  'hong kong': 'HKG',
+  'beijing': 'BJS',
+  'shanghai': 'SHA',
+  'seoul': 'SEL',
+  'osaka': 'OSA',
+  'kuala lumpur': 'KUL',
+  'manila': 'MNL',
+  'jakarta': 'JKT',
+  'hanoi': 'HAN',
+  'ho chi minh': 'SGN',
+  'phuket': 'HKT',
+  'bali': 'DPS',
+  'taipei': 'TPE',
+  'macau': 'MFM',
+  
+  // INDIAN CITIES
   'mumbai': 'BOM',
   'delhi': 'DEL',
+  'new delhi': 'DEL',
+  'bangalore': 'BLR',
+  'bengaluru': 'BLR',
+  'kolkata': 'CCU',
+  'calcutta': 'CCU',
+  'chennai': 'MAA',
+  'madras': 'MAA',
+  'hyderabad': 'HYD',
+  'ahmedabad': 'AMD',
+  'pune': 'PNQ',
+  'jaipur': 'JAI',
+  'lucknow': 'LKO',
+  'chandigarh': 'IXC',
+  'kochi': 'COK',
+  'cochin': 'COK',
+  'indore': 'IDR',
+  'nagpur': 'NAG',
+  'visakhapatnam': 'VTZ',
+  'vizag': 'VTZ',
+  'bhopal': 'BHO',
+  'patna': 'PAT',
+  'vadodara': 'BDQ',
+  'baroda': 'BDQ',
+  'ludhiana': 'LUH',
+  'agra': 'AGR',
+  'nashik': 'ISK',
+  'rajkot': 'RAJ',
+  'varanasi': 'VNS',
+  'banaras': 'VNS',
+  'srinagar': 'SXR',
+  'aurangabad': 'IXU',
+  'amritsar': 'ATQ',
+  'allahabad': 'IXD',
+  'prayagraj': 'IXD',
+  'ranchi': 'IXR',
+  'guwahati': 'GAU',
+  'coimbatore': 'CJB',
+  'jabalpur': 'JLR',
+  'gwalior': 'GWL',
+  'vijayawada': 'VGA',
+  'jodhpur': 'JDH',
+  'madurai': 'IXM',
+  'raipur': 'RPR',
+  'kota': 'KTU',
+  'bhubaneswar': 'BBI',
+  'hubli': 'HBX',
+  'dharwad': 'HBX',
+  'tirupati': 'TIR',
+  'mysore': 'MYQ',
+  'mysuru': 'MYQ',
+  'gurgaon': 'DEL',
+  'gurugram': 'DEL',
+  'noida': 'DEL',
+  'thiruvananthapuram': 'TRV',
+  'trivandrum': 'TRV',
+  'goa': 'GOI',
+  'panaji': 'GOI',
+  'udaipur': 'UDR',
+  'rishikesh': 'DED',
+  'haridwar': 'HW',
+  'shimla': 'SLV',
+  'manali': 'KUU',
+  'darjeeling': 'IXB',
+  'ooty': 'ONY',
+  'munnar': 'COK',
+  'pondicherry': 'PNY',
+  'puducherry': 'PNY',
+  'mahabalipuram': 'MAA',
+  'mamallapuram': 'MAA',
+  'khajuraho': 'HJR',
+  'hampi': 'BLR',
+  'ajanta': 'IXU',
+  'ellora': 'IXU',
+  'konark': 'BBI',
+  'puri': 'BBI',
+  'mount abu': 'ABR',
+  'gangtok': 'IXB',
+  'shillong': 'SHL',
+  'port blair': 'IXZ',
+  'andaman': 'IXZ',
+  'leh': 'IXL',
+  'ladakh': 'IXL',
+  'jammu': 'IXJ',
+  'dwarka': 'OMN',
+  'somnath': 'DIU',
+  'rameswaram': 'RMD',
+  'kanyakumari': 'IXY',
+  'shirdi': 'SAG',
+  'ajmer': 'AJM',
+  'pushkar': 'AJM',
+  'mathura': 'DEL',
+  'vrindavan': 'DEL',
+  'ayodhya': 'AYJ',
+  'bodhgaya': 'GAY',
+  'gaya': 'GAY',
+  'faridabad': 'DEL',
+  'ghaziabad': 'DEL',
+  'greater noida': 'DEL',
+  'navi mumbai': 'BOM',
+  'thane': 'BOM',
+  'mangalore': 'IXE',
+  'udupi': 'IXE',
+  'varkala': 'TRV',
+  'kovalam': 'TRV',
+  'mahabaleshwar': 'PNQ',
+  'lonavala': 'PNQ',
+  'alibaug': 'BOM',
+  'daman': 'NMB',
+  'diu': 'DIU',
+  'lakshadweep': 'AGX',
+  'vasco da gama': 'GOI',
+  'mussoorie': 'DED',
+  'nainital': 'PGH',
+  'dehradun': 'DED',
+  'coorg': 'IXG',
+  'kodaikanal': 'IXM',
+  'yercaud': 'SXV',
+  'coonoor': 'ONY',
+  'pachmarhi': 'BHO',
+  'matheran': 'BOM',
+  'lavasa': 'PNQ',
+  'surat': 'STV',
+  'kanpur': 'KNU',
+  'rourkela': 'ROU',
+  'durgapur': 'RDP',
+  'asansol': 'CCU',
+  'salem': 'SXV',
+  'tirunelveli': 'TEN',
+  'vellore': 'VLR',
+  'tiruchirappalli': 'TRZ',
+  'trichy': 'TRZ',
+  'thanjavur': 'TJV',
+  'warangal': 'WGC',
+  'guntur': 'GNT',
+  'nellore': 'NLR',
+  'tiruppur': 'TUP',
+  'erode': 'ERD',
+  'karur': 'KRR',
+  'belgaum': 'IXG',
+  'gulbarga': 'GBI',
+  'bellary': 'BEP',
+  'tumkur': 'TUM',
+  'rajahmundry': 'RJA',
+  'kakinada': 'CCU',
+  'bhilai': 'RPR',
+  'jamshedpur': 'IXW',
+  'cuttack': 'CTC',
+  'bilaspur': 'PAB',
+  'raigarh': 'RGH',
+  'korba': 'RPR',
+  'siliguri': 'IXB',
+  
+  // Canada
   'toronto': 'YTO',
   'vancouver': 'YVR',
   'montreal': 'YMQ',
+  'calgary': 'YYC',
+  'ottawa': 'YOW'
 };
 
 const getCityCode = (destination) => {
-  if (!destination) return 'NYC';
+  if (!destination || destination.trim() === '') {
+    return null;
+  }
+  
   const normalized = destination.toLowerCase().trim();
-  return CITY_CODES[normalized] || 'NYC';
+  const code = CITY_CODES[normalized];
+  
+  if (!code) {
+    console.warn(`City "${destination}" not found in database.`);
+    return null;
+  }
+  
+  console.log(`Found city code: ${destination} → ${code}`);
+  return code;
 };
 
 const formatDate = (date) => {
@@ -143,10 +369,19 @@ export const searchHotels = async (filters) => {
     const checkInDate = filters.checkIn || defaultDates.checkIn;
     const checkOutDate = filters.checkOut || defaultDates.checkOut;
     const adults = parseInt(filters.adults) || 2;
+    
     const cityCode = getCityCode(filters.destination);
+    
+    if (!cityCode) {
+      const errorMsg = filters.destination 
+        ? `City "${filters.destination}" not found. Please try: Mumbai, Delhi, Bangalore, Goa, Jaipur, Dubai, Paris, New York, etc.`
+        : 'Please enter a destination city';
+      throw new Error(errorMsg);
+    }
 
     console.log('Searching hotels with parameters:', {
       cityCode,
+      cityName: filters.destination,
       checkInDate,
       checkOutDate,
       adults
@@ -166,8 +401,7 @@ export const searchHotels = async (filters) => {
       .map(hotel => hotel.hotelId);
 
     if (hotelIds.length === 0) {
-      console.warn('No hotels found for city:', cityCode);
-      return { hotels: { hotels: [] } };
+      throw new Error(`No hotels found in ${filters.destination || cityCode}. Try a different city.`);
     }
 
     console.log(`Found ${hotelIds.length} hotels in ${cityCode}`);
@@ -188,60 +422,79 @@ export const searchHotels = async (filters) => {
 
     console.log(`Received ${hotels.length} hotel offers`);
 
-    hotels = hotels.map(hotelData => {
-      const hotel = hotelData.hotel;
-      const offer = hotelData.offers?.[0];
-      
-      return {
-        code: hotel.hotelId,
-        name: hotel.name,
-        cityCode: hotel.cityCode,
-        latitude: hotel.latitude,
-        longitude: hotel.longitude,
-        
-        categoryName: hotel.rating ? `${hotel.rating} Stars` : '3 Stars',
-        rating: hotel.rating || 3,
-        
-        address: hotel.address?.lines?.[0] || '',
-        city: hotel.address?.cityName || cityCode,
-        
-        minRate: offer?.price?.total || '0',
-        currency: offer?.price?.currency || 'USD',
-        
-        rooms: offer ? [{
-          code: offer.room?.type || 'STANDARD',
-          name: offer.room?.typeEstimated?.category || 'Standard Room',
-          rates: [{
-            net: offer.price?.total || '0',
-            boardCode: offer.boardType || 'ROOM_ONLY',
-            boardName: getBoardName(offer.boardType),
-          }]
-        }] : [],
-        
-        amenities: hotel.amenities || [],
-        
-        description: offer?.room?.description?.text || hotel.description || ''
-      };
-    });
+  hotels = hotels.map(hotelData => {
+  const hotel = hotelData.hotel;
+  const offer = hotelData.offers?.[0];
+  
+  let rating = 0;
+  if (hotel.rating) {
+    rating = parseInt(hotel.rating);
+  } else if (hotel.categoryCode) {
+    const match = hotel.categoryCode.match(/(\d+)/);
+    if (match) {
+      rating = parseInt(match[1]);
+    }
+  }
+  
+  return {
+    code: hotel.hotelId,
+    name: hotel.name,
+    cityCode: hotel.cityCode,
+    latitude: hotel.latitude,
+    longitude: hotel.longitude,
+    
+    categoryName: rating > 0 ? `${rating} Stars` : '3 Stars',
+    rating: rating > 0 ? rating : 3,
+    
+    address: hotel.address?.lines?.[0] || '',
+    city: hotel.address?.cityName || filters.destination || cityCode,
+    
+    minRate: offer?.price?.total || '0',
+    currency: offer?.price?.currency || 'USD',
+    
+    rooms: offer ? [{
+      code: offer.room?.type || 'STANDARD',
+      name: offer.room?.typeEstimated?.category || 'Standard Room',
+      rates: [{
+        net: offer.price?.total || '0',
+        boardCode: offer.boardType || 'ROOM_ONLY',
+        boardName: getBoardName(offer.boardType),
+      }]
+    }] : [],
+    
+    amenities: hotel.amenities || [],
+    description: offer?.room?.description?.text || hotel.description || ''
+  };
+});
+
+console.log(`Transformed ${hotels.length} hotels with ratings`);
+
+const ratingCounts = hotels.reduce((acc, h) => {
+  acc[h.rating] = (acc[h.rating] || 0) + 1;
+  return acc;
+}, {});
+console.log('Rating distribution:', ratingCounts);
 
     if (filters.rating) {
       const minRating = parseInt(filters.rating);
+      const beforeCount = hotels.length;
       hotels = hotels.filter(hotel => {
         const stars = hotel.rating || 0;
         return stars >= minRating;
       });
-      console.log(`Rating filter (${minRating}+): ${hotels.length} hotels`);
+      console.log(`Rating filter (${minRating}+): ${beforeCount} → ${hotels.length} hotels`);
     }
 
     if (filters.minPrice || filters.maxPrice) {
       const minPrice = parseFloat(filters.minPrice) || 0;
       const maxPrice = parseFloat(filters.maxPrice) || 999999;
+      const beforeCount = hotels.length;
       
       hotels = hotels.filter(hotel => {
         const price = parseFloat(hotel.minRate);
         return price >= minPrice && price <= maxPrice;
       });
-      console.log(`Price filter ($${minPrice}-$${maxPrice}): ${hotels.length} hotels`);
+      console.log(`Price filter ($${minPrice}-$${maxPrice}): ${beforeCount} → ${hotels.length} hotels`);
     }
 
     return {
@@ -270,7 +523,7 @@ export const searchHotels = async (filters) => {
     } else if (error.request) {
       throw new Error('No response from Amadeus API. Please check your connection.');
     } else {
-      throw new Error(`Request error: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 };
@@ -313,3 +566,11 @@ export const AVAILABLE_DESTINATIONS = Object.entries(CITY_CODES).map(([name, cod
   name: name,
   code: code
 }));
+
+export const POPULAR_CITIES = [
+  // International
+  'New York', 'Los Angeles', 'London', 'Paris', 'Dubai', 'Singapore', 'Tokyo', 'Bangkok', 'Hong Kong', 'Sydney',
+  
+  // Indian Cities
+  'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata', 'Pune', 'Ahmedabad', 'Goa', 'Jaipur', 'Udaipur', 'Agra', 'Varanasi', 'Shimla', 'Manali', 'Rishikesh', 'Darjeeling', 'Ooty', 'Tirupati', 'Shirdi', 'Haridwar', 'Amritsar', 'Puri', 'Kochi', 'Mysore', 'Coimbatore', 'Indore', 'Bhopal', 'Chandigarh', 'Lucknow', 'Nagpur', 'Surat', 'Visakhapatnam'
+];

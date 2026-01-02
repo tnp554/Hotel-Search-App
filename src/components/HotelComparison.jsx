@@ -75,14 +75,14 @@ const HotelComparison = () => {
               <div className="comparison-detail">
                 <span className="comparison-detail-label">Rating</span>
                 <span className="comparison-detail-value">
-                  {'⭐'.repeat(Math.round(rating))} ({rating})
+                  {'★'.repeat(Math.round(rating))} ({rating})
                 </span>
               </div>
 
               <div className="comparison-detail">
                 <span className="comparison-detail-label">Price/stay</span>
                 <span className="comparison-detail-value">
-                  ${price.toFixed(2)}
+                  {price.toFixed(2)}
                 </span>
               </div>
 
@@ -142,29 +142,6 @@ const HotelComparison = () => {
                 <Legend />
                 <Bar dataKey="price" fill="#667eea" name="Price per Stay" />
               </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="chart-container">
-            <h3 className="chart-title">Rating Distribution</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={ratingData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {ratingData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
             </ResponsiveContainer>
           </div>
         </>
